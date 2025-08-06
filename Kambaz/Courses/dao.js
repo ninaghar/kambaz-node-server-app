@@ -12,12 +12,12 @@ export function findAllCourses() {
   return Database.courses;
 }
 export function findCoursesForEnrolledUser(userId) {
-    console.log("=== DAO DEBUG ===");
-  console.log("Database object:", Database);
-  console.log("Database.courses:", Database.courses);
-  console.log("Type of Database.courses:", typeof Database.courses);
-  console.log("Is array:", Array.isArray(Database.courses));
-  console.log("================");
+//     console.log("=== DAO DEBUG ===");
+//   console.log("Database object:", Database);
+//   console.log("Database.courses:", Database.courses);
+//   console.log("Type of Database.courses:", typeof Database.courses);
+//   console.log("Is array:", Array.isArray(Database.courses));
+//   console.log("================");
   const { courses, enrollments } = Database;
   const enrolledCourses = courses.filter((course) =>
     enrollments.some((enrollment) => enrollment.user === userId && enrollment.course === course._id));

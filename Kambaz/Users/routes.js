@@ -52,7 +52,7 @@ export default function UserRoutes(app) {
   };
 
   const signin = (req, res) => {
-    console.log("Request body:", req.body);
+    // console.log("Request body:", req.body);
     if (!req.body) {
     return res.status(400).json({ message: "Request body is required" });
     }
@@ -62,12 +62,12 @@ export default function UserRoutes(app) {
     }
     const currentUser = dao.findUserByCredentials(username, password);
     if (currentUser) {
-        console.log("User found:", currentUser);
+        // console.log("User found:", currentUser);
     //   currentUser = user;
       req.session["currentUser"] = currentUser;
       res.json(currentUser);
     } else {
-        console.log("User NOT found");
+        // console.log("User NOT found");
       res.status(401).json({ message: "Unable to login. Try again later." });
     }
   };
@@ -93,20 +93,20 @@ export default function UserRoutes(app) {
 
     const findCoursesForEnrolledUser = (req, res) => {
         let { userId } = req.params;
-        console.log("URL param userId:", userId);
+        // console.log("URL param userId:", userId);
         if (userId === "current") {
         const currentUser = req.session["currentUser"];
-        console.log("Session currentUser:", currentUser);
+        // console.log("Session currentUser:", currentUser);
         if (!currentUser) {
-            console.log("No session user - sending 401");
+            // console.log("No session user - sending 401");
             res.sendStatus(401);
             return;
         }
         userId = currentUser._id;
         }
-        console.log("Final userId:", userId);
+        // console.log("Final userId:", userId);
         const courses = courseDao.findCoursesForEnrolledUser(userId);
-        console.log("Found courses:", courses?.length || 0);
+        // console.log("Found courses:", courses?.length || 0);
         res.json(courses);
     };
 

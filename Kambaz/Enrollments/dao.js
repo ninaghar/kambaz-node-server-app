@@ -35,9 +35,9 @@ export function findEnrollmentsForCourse(courseId) {
 }
 
 export function unenrollUserFromCourse(userId, courseId) {
-  console.log("=== UNENROLL DEBUG ===");
-  console.log("User:", userId, "Course:", courseId);
-  console.log("Before unenroll:", Database.enrollments);
+//   console.log("=== UNENROLL DEBUG ===");
+//   console.log("User:", userId, "Course:", courseId);
+//   console.log("Before unenroll:", Database.enrollments);
   
   if (Array.isArray(Database.enrollments)) {
     Database.enrollments = Database.enrollments.filter(
@@ -55,8 +55,8 @@ export function unenrollUserFromCourse(userId, courseId) {
     }
   }
   
-  console.log("After unenroll:", Database.enrollments);
-  console.log("=====================");
+//   console.log("After unenroll:", Database.enrollments);
+//   console.log("=====================");
 }
 
 export function deleteEnrollment(enrollmentId) {

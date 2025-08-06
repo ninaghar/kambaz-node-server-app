@@ -8,11 +8,11 @@ import enrollments from "./enrollments.js";
 export default { courses, modules, assignments, users, enrollments };
 
 
-console.log("=== DATABASE DEBUG ===");
-console.log("Courses:", courses?.length || 0);
-console.log("Users:", users?.length || 0);  
-console.log("Enrollments:", enrollments?.length || 0);
-console.log("Sample course:", courses?.[0]);
-console.log("Sample user:", users?.[0]);
-console.log("Sample enrollment:", enrollments?.[0]);
-console.log("=====================");
+// console.log("=== DATABASE DEBUG ===");
+// console.log("Courses:", courses?.length || 0);
+// console.log("Users:", users?.length || 0);  
+// console.log("Enrollments:", enrollments?.length || 0);
+// console.log("Sample course:", courses?.[0]);
+// console.log("Sample user:", users?.[0]);
+// console.log("Sample enrollment:", enrollments?.[0]);
+// console.log("=====================");

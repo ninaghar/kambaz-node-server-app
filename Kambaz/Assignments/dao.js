@@ -12,21 +12,21 @@ function ensureArray(data) {
 }
 
 export function findAssignmentsForCourse(courseId) {
-  console.log("=== ASSIGNMENTS DAO DEBUG ===");
-  console.log("Database.assignments:", Database.assignments);
-  console.log("Type:", typeof Database.assignments);
+//   console.log("=== ASSIGNMENTS DAO DEBUG ===");
+//   console.log("Database.assignments:", Database.assignments);
+//   console.log("Type:", typeof Database.assignments);
   
   const assignmentsArray = ensureArray(Database.assignments);
-  console.log("Converted to array:", assignmentsArray.length, "assignments");
-  console.log("Looking for courseId:", courseId);
+//   console.log("Converted to array:", assignmentsArray.length, "assignments");
+//   console.log("Looking for courseId:", courseId);
   
   const filteredAssignments = assignmentsArray.filter((assignment) => {
-    console.log(`Assignment ${assignment._id}: course=${assignment.course}, matches=${assignment.course === courseId}`);
+    // console.log(`Assignment ${assignment._id}: course=${assignment.course}, matches=${assignment.course === courseId}`);
     return assignment.course === courseId;
   });
   
-  console.log("Found assignments:", filteredAssignments);
-  console.log("============================");
+//   console.log("Found assignments:", filteredAssignments);
+//   console.log("============================");
   
   return filteredAssignments;
 }
