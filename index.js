@@ -17,7 +17,9 @@ const app = express()
 app.use(
     cors({
    credentials: true,
-   origin: process.env.NETLIFY_URL || "http://localhost:5173",
+   origin: [process.env.NETLIFY_URL || "http://localhost:5173",
+   "https://a5--superlative-figolla-b02519.netlify.app",
+   ],
 })
 ); 
 const sessionOptions = {
