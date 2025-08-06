@@ -174,7 +174,28 @@ export default function UserRoutes(app) {
     res.sendStatus(204);
   });
 
+  // enrollments
+const findCurrentUserEnrollments = (req, res) => {
+    console.log("=== FIND CURRENT USER ENROLLMENTS ===");
+    console.log("Session:", req.session);
+    console.log("Current user:", req.session["currentUser"]);
+    
+    const currentUser = req.session["currentUser"];
+    if (!currentUser) {
+    //   console.log(" No current user in session");
+      res.sendStatus(401);
+      return;
+    }
+    
+    // Import enrollments DAO at top of file if not already imported
+    const enrollments = enrollmentsDao.findEnrollmentsForUser(currentUser._id);
+    // console.log("Found enrollments for user:", enrollments.length);
+    console.log("Enrollments:", enrollments);
+    res.json(enrollments);
+  };
 
+  // Register the route
+  app.get("/api/users/current/enrollments", findCurrentUserEnrollments);
 
 }
 
