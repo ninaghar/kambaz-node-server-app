@@ -83,11 +83,16 @@ export default function UserRoutes(app) {
 //   };
 
     const profile = (req, res) => {
+        console.log("Profile route hit");
+        console.log("Session:", req.session);
+        console.log("Current user in session:", req.session["currentUser"]);
         const currentUser = req.session["currentUser"];
         if (!currentUser) {
+            console.log("No user in session, returning 401");
         res.sendStatus(401);
         return;
         }
+        console.log("Returning user:", currentUser);
         res.json(currentUser);
     };
 
@@ -136,7 +141,8 @@ export default function UserRoutes(app) {
   app.post("/api/users/signup", signup);
   app.post("/api/users/signin", signin);
   app.post("/api/users/signout", signout);
-  app.get("/api/users/profile", profile);
+//   app.get("/api/users/profile", profile);
+  app.post("/api/users/profile", profile);
 
 // enrollments
 // Get current user's enrollments

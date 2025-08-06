@@ -51,8 +51,9 @@ console.log("NETLIFY_URL:", process.env.NETLIFY_URL);
 console.log("Cookie settings:", sessionOptions.cookie);
 console.log("=====================");
 
-app.use(session(sessionOptions));
 app.use(express.json());
+app.use(session(sessionOptions));
+
 
 // Routes
 UserRoutes(app);
@@ -67,6 +68,18 @@ const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
   console.log("Environment:", process.env.NODE_ENV || "development");
+});
+
+
+app.get("/api/test-modules", (req, res) => {
+  res.json({ message: "Module routes are working!" });
+});
+
+app.listen(4000, () => {
+  console.log("Server running on http://localhost:4000");
+  console.log("Available routes:");
+  console.log("- GET /api/test-modules");
+  console.log("- DELETE /api/modules/:moduleId");
 });
 
 // // const express = require('express')
