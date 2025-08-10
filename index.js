@@ -1,6 +1,7 @@
 import "dotenv/config";
 import session from "express-session";
 import express from 'express';
+import mongoose from "mongoose";
 import Hello from "./Hello.js"
 import Lab5 from "./Lab5/index.js";
 import cors from "cors";
@@ -10,6 +11,8 @@ import ModuleRoutes from "./Kambaz/Modules/routes.js";
 import AssignmentRoutes from "./Kambaz/Assignments/routes.js";
 import EnrollmentRoutes from "./Kambaz/Enrollments/routes.js";
 
+const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING ||  "mongodb://127.0.0.1:27017/kambaz"
+mongoose.connect(CONNECTION_STRING);
 const app = express();
 
 // CORS configuration - MUST come before session
@@ -50,9 +53,9 @@ console.log("SESSION_SECRET exists:", !!process.env.SESSION_SECRET);
 console.log("NETLIFY_URL:", process.env.NETLIFY_URL);
 console.log("Cookie settings:", sessionOptions.cookie);
 console.log("=====================");
-
-app.use(express.json());
 app.use(session(sessionOptions));
+app.use(express.json());
+
 
 
 // Routes

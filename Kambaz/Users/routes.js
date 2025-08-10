@@ -5,34 +5,84 @@ import * as enrollmentsDao from "../Enrollments/dao.js";
 let currentUser = null;
 
 export default function UserRoutes(app) {
-  const createUser = (req, res) => {
-    const user = dao.createUser(req.body);
-    res.json(user);
+//   const createUser = async(req, res) => {
+//     const user = await dao.createUser(req.body);
+//     res.json(user);
+//   };
+
+const createUser = async (req, res) => {
+    try {
+      console.log("=== CREATE USER ROUTE CALLED ===");
+      console.log("Request body:", req.body);
+      
+      // Remove _id from request body if it exists
+      const { _id, ...userWithoutId } = req.body;
+      
+      const user = await dao.createUser(userWithoutId);
+      console.log("User created successfully:", user._id);
+      res.json(user);
+    } catch (error) {
+      console.error("=== ERROR IN CREATE USER ===");
+      console.error("Error details:", error);
+      
+      // Handle duplicate key error specifically
+      if (error.code === 11000) {
+        console.log("Duplicate key error detected");
+        if (error.message.includes('username')) {
+          res.status(400).json({ message: "Username already exists" });
+        } else if (error.message.includes('email')) {
+          res.status(400).json({ message: "Email already exists" });
+        } else {
+          res.status(400).json({ message: "Duplicate entry" });
+        }
+      } else {
+        res.status(500).json({ message: "Error creating user", error: error.message });
+      }
+    }
   };
 
-  const deleteUser = (req, res) => {
-    const { userId } = req.params;
-    dao.deleteUser(userId);
-    res.sendStatus(204);
+  const deleteUser = async(req, res) => {
+    const status = await dao.deleteUser(req.params.userId);
+      res.json(status);
+    // const { userId } = req.params;
+    // dao.deleteUser(userId);
+    // res.sendStatus(204);
   };
 
-  const findAllUsers = (req, res) => {
-    const users = dao.findAllUsers();
+  const findAllUsers = async (req, res) => {
+    const { role, name } = req.query;
+    if (role) {
+      const users = await dao.findUsersByRole(role);
+      res.json(users);
+      return;
+    }
+    if (name) {
+      const users = await dao.findUsersByPartialName(name);
+      res.json(users);
+      return;
+    }
+    const users = await dao.findAllUsers();
+    console.log("About to send:", users);
     res.json(users);
   };
 
-  const findUserById = (req, res) => {
+  const findUserById = async(req, res) => {
     const { userId } = req.params;
-    const user = dao.findUserById(userId);
+    const user = await dao.findUserById(userId);
     res.json(user);
   };
 
-  const updateUser = (req, res) => {
+  const updateUser = async(req, res) => {
     const userId = req.params.userId;
     const userUpdates = req.body;
-    dao.updateUser(userId, userUpdates);
-    const currentUser = dao.findUserById(userId);
-    req.session["currentUser"] = currentUser;
+    await dao.updateUser(userId, userUpdates);
+    const currentUser = req.session["currentUser"];
+    if (currentUser && currentUser._id === userId) {
+        req.session["currentUser"] = { ...currentUser, ...userUpdates };
+    }
+
+    // const currentUser = dao.findUserById(userId);
+    // req.session["currentUser"] = currentUser;
     res.json(currentUser);
 
     // const { userId } = req.params;
@@ -40,18 +90,18 @@ export default function UserRoutes(app) {
     // res.json(status);
   };
 
-  const signup = (req, res) => {
-    const user = dao.findUserByUsername(req.body.username);
+  const signup = async (req, res) => {
+    const user = await dao.findUserByUsername(req.body.username);
     if (user) {
       res.status(400).json({ message: "Username already in use" });
       return;
     }
-    const currentUser = dao.createUser(req.body);
+    const currentUser = await dao.createUser(req.body);
     req.session["currentUser"] = currentUser;
     res.json(currentUser);
   };
 
-  const signin = (req, res) => {
+  const signin = async (req, res) => {
     // console.log("Request body:", req.body);
     if (!req.body) {
     return res.status(400).json({ message: "Request body is required" });
@@ -60,7 +110,7 @@ export default function UserRoutes(app) {
     if (!username || !password) {
     return res.status(400).json({ message: "Username and password are required" });
     }
-    const currentUser = dao.findUserByCredentials(username, password);
+    const currentUser = await dao.findUserByCredentials(username, password);
     if (currentUser) {
         // console.log("User found:", currentUser);
     //   currentUser = user;
