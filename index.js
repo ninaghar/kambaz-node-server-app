@@ -21,7 +21,8 @@ app.use(
     credentials: true,
     origin: [
       "http://localhost:5173", // Local development
-      "https://a5--superlative-figolla-b02519.netlify.app", // Your Netlify URL
+      "https://a5--superlative-figolla-b02519.netlify.app", 
+      'https://a6--superlative-figolla-b02519.netlify.app',// Your Netlify URL
       process.env.NETLIFY_URL,
     ].filter(Boolean),
   })
