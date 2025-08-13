@@ -1,6 +1,7 @@
 import * as dao from "./dao.js";
 import * as courseDao from "../Courses/dao.js";
 import * as enrollmentsDao from "../Enrollments/dao.js";
+// import bcrypt from "bcrypt";
 
 let currentUser = null;
 
@@ -121,6 +122,33 @@ const createUser = async (req, res) => {
       res.status(401).json({ message: "Unable to login. Try again later." });
     }
   };
+
+// const signin = async (req, res) => {
+//   if (!req.body) {
+//     return res.status(400).json({ message: "Request body is required" });
+//   }
+
+//   const { username, password } = req.body;
+//   if (!username || !password) {
+//     return res
+//       .status(400)
+//       .json({ message: "Username and password are required" });
+//   }
+
+//   const user = await dao.findUserByUsername(username);
+//   if (!user) {
+//     return res.status(401).json({ message: "Invalid credentials" });
+//   }
+
+//   const match = await bcrypt.compare(password, user.password);
+//   if (!match) {
+//     return res.status(401).json({ message: "Invalid credentials" });
+//   }
+
+//   req.session.currentUser = user;
+//   res.json(user);
+// };
+
 
   const signout = (req, res) => {
     req.session.destroy();

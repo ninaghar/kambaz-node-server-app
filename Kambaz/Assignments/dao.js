@@ -1,11 +1,33 @@
 import assignmentModel from "./model.js";
 import { v4 as uuidv4 } from "uuid";
 
-export const createAssignment = (assignment) => {
-//   const newAssignment = { ...assignment, _id: assignment._id || uuidv4() };
-  const newAssignment = { ...assignment }; 
-  return assignmentModel.create(newAssignment);
+
+export const createAssignment = async (assignment) => {
+  try {
+    // Generate a string ID if not provided
+    const newAssignment = {
+      ...assignment,
+      _id: assignment._id || uuidv4()
+    };
+    
+    console.log("Creating assignment with data:", newAssignment);
+    
+    // Create and return the new assignment
+    const createdAssignment = await assignmentModel.create(newAssignment);
+    console.log("Created assignment:", createdAssignment);
+    
+    return createdAssignment;
+  } catch (error) {
+    console.error("Error in createAssignment:", error);
+    throw error;
+  }
 };
+// export const createAssignment = async(assignment) => {
+//     //   const newAssignment = { ...assignment, _id: assignment._id || uuidv4() };
+//     //   const newAssignment = { ...assignment }; 
+//   const newAssignment = await assignmentModel.create(assignment);
+//   return assignmentModel.create(newAssignment);
+// };
 
 export const findAllAssignments = () => assignmentModel.find();
 
@@ -15,8 +37,22 @@ export const findAssignmentsForCourse = (courseId) =>
 export const findAssignmentById = (assignmentId) =>
   assignmentModel.findById(assignmentId);
 
-export const updateAssignment = (assignmentId, assignment) =>
-  assignmentModel.updateOne({ _id: assignmentId }, { $set: assignment });
+// export const updateAssignment = (assignmentId, assignment) =>
+//   assignmentModel.updateOne({ _id: assignmentId }, { $set: assignment });
+
+export const updateAssignment = async (assignmentId, assignment) => {
+  try {
+    const result = await assignmentModel.findByIdAndUpdate(
+      assignmentId, 
+      { $set: assignment }, 
+      { new: true } // Return the updated document
+    );
+    return result;
+  } catch (error) {
+    console.error("Error updating assignment:", error);
+    throw error;
+  }
+};
 
 export const deleteAssignment = (assignmentId) =>
   assignmentModel.deleteOne({ _id: assignmentId });

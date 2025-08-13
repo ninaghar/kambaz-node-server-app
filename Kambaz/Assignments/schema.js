@@ -1,12 +1,21 @@
 import mongoose from "mongoose";
 
 const assignmentSchema = new mongoose.Schema({
+//   _id: String,  
+  _id: { 
+    type: String, 
+    default: function() { 
+      return new mongoose.Types.ObjectId().toString(); 
+    }
+  },
   title: { type: String, required: true },
   description: String,
   points: Number,
   dueDate: Date,
   course: String
-}, { collection: "assignments" });
+}, { collection: "assignments" ,
+    strict: false // Allow additional fields
+ });
 
 export default assignmentSchema;
 

@@ -1,8 +1,17 @@
 import * as dao from "./dao.js";
 
 export default function AssignmentRoutes(app) {
+
+
   const createAssignment = async (req, res) => {
+    const { courseId } = req.params;     
+    const assignmentData = { 
+    ...req.body, 
+    course: courseId 
+    };
+ 
     const assignment = await dao.createAssignment(req.body);
+
     res.json(assignment);
   };
 
