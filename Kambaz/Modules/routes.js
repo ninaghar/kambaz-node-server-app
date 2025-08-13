@@ -3,22 +3,23 @@ import * as modulesDao from "./dao.js";
 export default function ModuleRoutes(app) {
       console.log("ModuleRoutes: Setting up DELETE route for /api/modules/:moduleId");
   // PUT route for updating modules
-  app.put("/api/modules/:moduleId", (req, res) => {
-    try {
+  app.put("/api/modules/:moduleId", async(req, res) => {
+    // try {
       const { moduleId } = req.params;
       const moduleUpdates = req.body;
       console.log("Updating module:", moduleId, "with:", moduleUpdates);
       
-      const updatedModule = modulesDao.updateModule(moduleId, moduleUpdates);
-      res.json(updatedModule);
-    } catch (error) {
-      console.error("Error updating module:", error.message);
-      res.status(500).json({ message: error.message });
-    }
+      const status = await modulesDao.updateModule(moduleId, moduleUpdates);
+      res.send(status);
+    //   res.json(updatedModule);
+    // } catch (error) {
+    //   console.error("Error updating module:", error.message);
+    //   res.status(500).json({ message: error.message });
+    // }
   });
 
   // DELETE route for deleting modules
-  app.delete("/api/modules/:moduleId", (req, res) => {
+  app.delete("/api/modules/:moduleId", async(req, res) => {
      console.log("=== DELETE /api/modules/:moduleId HIT ===");
     console.log("Request params:", req.params);
     console.log("Module ID:", req.params.moduleId);
@@ -27,7 +28,7 @@ export default function ModuleRoutes(app) {
       console.log("Deleting module:", moduleId);
       console.log("modulesDao functions:", Object.keys(modulesDao));
     //   modulesDao.deleteModule(moduleId);
-    const result = modulesDao.deleteModule(moduleId);
+    const result = await modulesDao.deleteModule(moduleId);
       console.log("Delete successful, result:", result);
       res.sendStatus(204); // Success, no content
     } catch (error) {
